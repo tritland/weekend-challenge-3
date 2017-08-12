@@ -4,9 +4,19 @@ $(document).ready(function(){
     var objectToSend = {
       task: newTask,
     };
-    console.log(objectToSend);
-    // call saveKoala with the new obejct
-    //saveKoala(objectToSend);
+    saveTask(objectToSend); //calls saveKoala function with new task object
+    });
 
-    })
 });
+
+function saveTask(newTask){
+    //console.log('saveTask function contains', newTask)
+    $.ajax({
+        url: '/tasks',
+        method: 'POST',
+        data: newTask,
+        success: function (response){
+            console.log(response);
+        }        
+    });
+};
