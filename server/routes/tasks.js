@@ -42,4 +42,24 @@ router.get('/', function (req, res) {
     })
 });
 
+router.delete('/:id', function (req, res) {
+    var taskId = req.params.id;
+    pool.connect(function (errorConnectingToDatabase, client, done) {
+        if (errorConnectingToDatabase) {
+            console.log('error connecting to the database', errorConnectingToDatabase);
+            res.send(500);
+        } else {
+            client.query("DELETE FROM tasks WHERE id=$1",[taskId], function (errorMakingQuery, result) {
+                done();
+                if (errorMakingQuery) {
+                    console.log('error making query', errorMakingQuery)
+                    res.send(500)
+                } else {
+                    res.sendStatus(200);
+                }
+            })
+        }
+    })
+});
+
 module.exports = router

@@ -9,6 +9,17 @@ $(document).ready(function () {
         saveTask(objectToSend);
     });
 
+    $('#viewTasks').on('click', '.deleteButton', function () {
+        var rowId = $(this).parent().parent().data().id;
+        $.ajax({
+            method: 'DELETE',
+            url: '/tasks/' + rowId,
+            success: function (response) {
+                getTasks();
+            }
+        })
+    });
+
 });
 
 function saveTask(newTask) {
@@ -17,7 +28,6 @@ function saveTask(newTask) {
         method: 'POST',
         data: newTask,
         success: function (response) {
-            console.log(response);
             getTasks(); //gets updated task table
             $('#taskInput').val(''); //clears input field
         }
@@ -40,6 +50,8 @@ function showTasks(tasks) {
     for (var i = 0; i < tasks.length; i++) {
         var task = tasks[i];
         var $taskRow = $('<tr><td>' + task.task_list + '</td><td><input class="checkBox" type="checkbox"></td><td><button class="deleteButton"> Delete </button></td></tr>');
+
+        $taskRow.data('id', task.id);
 
         $('#viewTasks').append($taskRow);
     }
