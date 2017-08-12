@@ -1,5 +1,5 @@
-console.log('js is sourced');
-
 $(document).ready(function(){
-    console.log('jquery is sourced');
+    $('#addTaskButton').on('click', function (){
+        console.log('add task button clicked');
+    })
 });
