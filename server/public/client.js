@@ -10,13 +10,25 @@ $(document).ready(function(){
 });
 
 function saveTask(newTask){
-    //console.log('saveTask function contains', newTask)
     $.ajax({
         url: '/tasks',
         method: 'POST',
         data: newTask,
         success: function (response){
             console.log(response);
+            getTasks(); //gets updated task table
+            $('#taskInput').val(''); //clears input field
         }        
     });
+};
+
+function getTasks(){
+ $.ajax({
+    url: '/tasks',
+    method: 'GET',
+    success: function (response) {
+      console.log('got these tasks: ', response);
+      //showTasks(response);
+    } 
+  });
 };
