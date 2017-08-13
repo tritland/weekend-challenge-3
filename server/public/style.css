@@ -1,8 +1,18 @@
 table {
     margin-top: 10px;
     border-collapse: collapse;
+    background-color: #d3d9e2;
+}
+
+#tableHead {
+    background-color: #969995;
+    color: white;
 }
 
 table, th, td {
     border: 1px solid black;
 }
+
+
+
+

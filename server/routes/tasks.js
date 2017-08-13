@@ -9,7 +9,7 @@ router.post('/', function (req, res) {
             console.log('error connecting to the database', errorConnectingToDatabase);
             res.sendStatus(500);
         } else {
-            client.query('INSERT INTO tasks ( task_list ) VALUES ($1)', [req.body.task], function (errorMakingQuery, result) {
+            client.query('INSERT INTO tasks ( task_list, completed ) VALUES ($1, $2)', [req.body.task, req.body.completed], function (errorMakingQuery, result) {
                 done();
                 if (errorMakingQuery) {
                     console.log('error making query', errorMakingQuery);
@@ -49,11 +49,32 @@ router.delete('/:id', function (req, res) {
             console.log('error connecting to the database', errorConnectingToDatabase);
             res.send(500);
         } else {
-            client.query("DELETE FROM tasks WHERE id=$1",[taskId], function (errorMakingQuery, result) {
+            client.query("DELETE FROM tasks WHERE id=$1", [taskId], function (errorMakingQuery, result) {
                 done();
                 if (errorMakingQuery) {
                     console.log('error making query', errorMakingQuery)
                     res.send(500)
+                } else {
+                    res.sendStatus(200);
+                }
+            })
+        }
+    })
+});
+
+router.put('/:id', function (req, res) {
+    var tasksId = req.params.id;
+    console.log('put route hit')
+    pool.connect(function (errorConnectingToDatabase, client, done) {
+        if (errorConnectingToDatabase) {
+            console.log('error connecting to the database', errorConnectingToDatabase);
+            res.sendStatus(500);
+        } else {
+            client.query("UPDATE tasks SET completed = 'Y' WHERE id = $1;", [tasksId], function (errorMakingQuery, result) {
+                done();
+                if (errorMakingQuery) {
+                    console.log('error making query', errorMakingQuery);
+                    res.sendStatus(500);
                 } else {
                     res.sendStatus(200);
                 }
